@@ -1,0 +1,5 @@
+# Generated file for clangd
+compile_commands.json
+
+# merge conflict files
+*.orig

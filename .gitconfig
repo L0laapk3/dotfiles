@@ -1,0 +1,21 @@
+; Usage: create a new ~/.gitconfig and add the following contents:
+;[include]
+;	path = ~/dotfiles/.gitconfig
+
+[core]
+	editor = code --wait
+	excludesfile = ~/.gitignore
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+
+[push]
+	autoSetupRemote = true
+
+[init]
+	defaultBranch = master
