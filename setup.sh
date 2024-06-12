@@ -1,26 +1,33 @@
 #!/bin/zsh
 
-dstDir=${1:-$HOME}
-srcDir=${2:-$(dirname $0)}
+srcDir=$(realpath --relative-to="$HOME" "${1:-$(dirname $0)}")
+dstDir=$(realpath --relative-to="$HOME" "${2:-$HOME}")
+
+# echo "~/$dstDir -> ~/$srcDir"
 
 # Make links for all files to dotfiles folder
-for file in "$srcDir"/**/.*; do # Everything starting with dot
-	if [[ -d "$file" ]]; then # Skip directories
+for file in $(find "$HOME/$srcDir" -xtype f -name '.*' -not -path "$HOME/$srcDir/.git" -and -not -path "$HOME/$srcDir/dotfiles/*"); do # Everything starting with dot
+
+	file=$(realpath -s --relative-to="$HOME/$srcDir" "$file")
+
+	if [[ "$file" == ".gitmodules" ]]; then
 		continue
 	fi
-	src=$(realpath --relative-to="$dstDir" "$file")
-	dst=$(realpath --relative-to="$srcDir" "$file")
-	mkdir -p $(dirname ~/"$dst")
+
+	src="$srcDir/$file"
+	dst=$(realpath -s --relative-to="$HOME" "$HOME/$dstDir/$file")
+
+	mkdir -p $(dirname "$HOME/$dst")
 	result=""
-	if [[ -L ~/"$dst" ]]; then
-		rm ~/"$dst"
-		result="(replaced)"
+	if [[ -L "$HOME/$dst" ]]; then
+		rm "$HOME/$dst"
+		result="(link updated)"
 	fi
-	if [[ -e ~/"$dst" ]]; then
-		result="(exists)"
+	if [[ -e "$HOME/$dst" ]]; then
+		result="(file exists)"
 	else
-		ln -s ~/"$src" ~/"$dst"
+		ln -s "$(realpath --relative-to="$HOME/$dstDir" "$HOME/$src")" "$HOME/$dst"
+		printf "~/%-23s -> ~/%-32s %s\n" "$dst" "$src" $result
 	fi
 
-	printf "~/%-19s -> ~/%-28s %s\n" "$dst" "$src" $result
 done
