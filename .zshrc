@@ -1,10 +1,3 @@
-requiredver="5.5.0"
-if [[ "$(echo "$requiredver\n$ZSH_VERSION" | sort -V | head -n1)" != "$requiredver" ]]; then
-	return
-fi;
-
-
-
 ZLE_RPROMPT_INDENT=0
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
