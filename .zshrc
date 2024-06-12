@@ -68,7 +68,7 @@ _zinit_late_plugins=(
 	atload="!_zsh_autosuggest_start"
 		zsh-users/zsh-autosuggestions
 
-	atload="ZSHZ_CASE=smart"
+	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1"
 		agkozak/zsh-z
 )
 
