@@ -19,3 +19,9 @@
 
 [init]
 	defaultBranch = master
+
+[pull]
+	rebase = false
+
+[submodule]
+	recurse = true
