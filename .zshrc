@@ -17,12 +17,13 @@ fi
 # Keybinds
 WORDCHARS=$WORDCHARS:s:/: # Remove the / from word chars
 
-bindkey "^[[1;5C" forward-word      # ctrl arrow
+bindkey "^[[3~"   delete-char        # delete key
+bindkey "^[[H"    beginning-of-line  # home
+bindkey "^[[F"    end-of-line        # end
+bindkey "^[[1;5C" forward-word       # ctrl arrows
 bindkey "^[[1;5D" backward-word
-bindkey "^[[3~"   delete-char       # delete key
-bindkey "^[[H"    beginning-of-line # home end
-bindkey "^[[F"    end-of-line
-bindkey "^[[3;5~" kill-word         # ctrl delete
+bindkey "^H"      backward-kill-word # ctrl backspace
+bindkey "^[[3;5~" kill-word          # ctrl delete
 
 
 
