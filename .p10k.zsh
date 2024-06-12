@@ -27,7 +27,7 @@
 
   # Unset all configuration options. This allows you to apply configuration changes without
   # restarting zsh. Edit ~/.p10k.zsh and type `source ~/.p10k.zsh`.
-  unset -m '(POWERLEVEL9K_*|DEFAULT_USER)~POWERLEVEL9K_GITSTATUS_DIR'
+  unset -m '(POWERLEVEL9K_*)~POWERLEVEL9K_GITSTATUS_DIR'
 
   typeset -g POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
 
@@ -942,12 +942,17 @@
   # Default context color (no privileges, no SSH).
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=180
 
+
+  CONTEXT_USER_STR="%n@"
+  if [[ $USER == $DEFAULT_USER ]]; then
+	CONTEXT_USER_STR=""
+  fi
   # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE="%B$CONTEXT_USER_STR%m"
   # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE="$CONTEXT_USER_STR%m"
   # Default context format (no privileges, no SSH): user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE="$CONTEXT_USER_STR%m"
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.
