@@ -26,7 +26,7 @@ for file in $(find "$HOME/$srcDir" -xtype f -name '.*' -not -path "$HOME/$srcDir
 	if [[ -e "$HOME/$dst" ]]; then
 		result="(file exists)"
 	else
-		ln -s "$(realpath --relative-to="$HOME/$dstDir" "$HOME/$src")" "$HOME/$dst"
+		ln -s "$(realpath -s --relative-to="$HOME/$dstDir" "$HOME/$src")" "$HOME/$dst"
 		printf "~/%-23s -> ~/%-32s %s\n" "$dst" "$src" $result
 	fi
 
