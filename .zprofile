@@ -15,3 +15,5 @@ else
         ln -sfT $LUSER/$1 ~/$1
     }
 fi
+
+export DEFAULT_USER=$USER
