@@ -1,2 +1,3 @@
-touch ~/.z
-chmod go-r .z
+#! /bin/env zsh
+
+chmod -f go-r ~/.z

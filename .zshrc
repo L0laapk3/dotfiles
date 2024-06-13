@@ -1,3 +1,5 @@
+#! /bin/env zsh
+
 ZLE_RPROMPT_INDENT=0
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -79,6 +81,7 @@ zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
 # aliases
 alias ll="ls -la"
 alias llt="ll -rt"
+alias lls="ll -rSh"
 
 alias nice="nice -n19 ionice -c3" # More nice :)
 

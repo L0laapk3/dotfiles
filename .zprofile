@@ -1,3 +1,5 @@
+#! /bin/env zsh
+
 export LUSER=$LFOLDER/$USER
 if ! [[ -d $LFOLDER ]]; then
     link_local() {
