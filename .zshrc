@@ -29,6 +29,9 @@ SAVEHIST=10000
 setopt appendhistory
 
 
+# autocd
+setopt autocd 1
+
 
 ### Install zinit
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -49,12 +52,17 @@ _zinit_plugins=(
 		romkatv/powerlevel10k
 
 	atload="                                      \
-		zstyle ':autocomplete:*:*' list-lines 99; \
 		bindkey -M menuselect                     \
-			'^[[D' .backward-char                 \
-			'^[[C' .forward-char                  \
+			'^[[D'    .backward-char              \
+			'^[[C'    .forward-char               \
 			'^[[1;5C' .forward-word               \
-			'^[[1;5D' .backward-word;             \
+			'^[[1;5D' .backward-word              \
+			'^I'      menu-complete               \
+			'^[[Z'    reverse-menu-complete       \
+			'^M'      .accept-line;               \
+		bindkey                                   \
+			'^I'   menu-select                    \
+			'^[[Z' menu-select;                   \
 	"
 		marlonrichert/zsh-autocomplete
 )
@@ -81,7 +89,7 @@ zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
 # aliases
 alias ll="ls -la"
 alias llt="ll -rt"
-alias lls="ll -rSh"
+alias du="du -ahd1 | sort -h"
 
 alias nice="nice -n19 ionice -c3" # More nice :)
 
