@@ -30,7 +30,7 @@ setopt appendhistory
 
 
 # autocd
-setopt autocd 1
+setopt autocd
 
 
 ### Install zinit
