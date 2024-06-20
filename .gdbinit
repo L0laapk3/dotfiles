@@ -1,5 +1,5 @@
 python
-# append PYTHONPATH with for example `gcc-x.y.z/python/libstdcxx/v6`.
-from printers import register_libstdcxx_printers
-register_libstdcxx_printers(None)
+# append PYTHONPATH with path to `wget https://raw.githubusercontent.com/llvm/llvm-project/release/18.x/libcxx/utils/gdb/libcxx/printers.py`
+from printers import register_libcxx_printer_loader
+register_libcxx_printer_loader()
 end
