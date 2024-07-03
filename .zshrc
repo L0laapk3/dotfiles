@@ -10,7 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Keybinds
-WORDCHARS=$WORDCHARS:s:/: # Remove the / from word chars
+WORDCHARS=\\$WORDCHARS:s:/: # Add \, remove / from word chars
 
 bindkey "^[[3~"   delete-char        # delete key
 bindkey "^[[H"    beginning-of-line  # home
@@ -20,6 +20,10 @@ bindkey "^[[1;5D" backward-word
 bindkey "^H"      backward-kill-word # ctrl backspace
 bindkey "^[[3;5~" kill-word          # ctrl delete
 
+zstyle ':completion:*' group-order \
+    aliases suffix-aliases functions reserved-words builtins commands \
+    remotes hosts recent-branches commits \
+    all-expansions expansions options
 
 
 # Turn on history file
