@@ -16,4 +16,8 @@ try:
     register_libstdcxx_printers(None)
 except:
     pass
+
+from gdb import execute
+execute("set disassembly-flavor intel")
+
 end
