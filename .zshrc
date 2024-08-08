@@ -10,7 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Keybinds
-WORDCHARS=\\$WORDCHARS:s:/: # Add \, remove / from word chars
+WORDCHARS=\=\\\|$WORDCHARS:s:/: # Add \, =, |, remove / from word chars
 
 bindkey "^[[3~"   delete-char        # delete key
 bindkey "^[[H"    beginning-of-line  # home
@@ -55,18 +55,19 @@ _zinit_plugins=(
 	atload="source ~/.p10k.zsh"
 		romkatv/powerlevel10k
 
-	atload="                                      \
-		bindkey -M menuselect                     \
-			'^[[D'    .backward-char              \
-			'^[[C'    .forward-char               \
-			'^[[1;5C' .forward-word               \
-			'^[[1;5D' .backward-word              \
-			'^I'      menu-complete               \
-			'^[[Z'    reverse-menu-complete       \
-			'^M'      .accept-line;               \
-		bindkey                                   \
-			'^I'   menu-select                    \
-			'^[[Z' menu-select;                   \
+	atload="                                             \
+		bindkey -M menuselect                            \
+			'^[[D'    .backward-char                     \
+			'^[[C'    .forward-char                      \
+			'^[[1;5C' .forward-word                      \
+			'^[[1;5D' .backward-word                     \
+			'^I'      menu-complete                      \
+			'^[[Z'    reverse-menu-complete              \
+			'^M'      .accept-line;                      \
+		bindkey                                          \
+			'^I'   menu-select                           \
+			'^[[Z' menu-select;                          \
+		zstyle ':completion:*:paths' path-completion yes \
 	"
 		marlonrichert/zsh-autocomplete
 )
@@ -88,6 +89,7 @@ _zinit_late_plugins=(
 
 zinit      lucid light-mode depth=1 for ${_zinit_plugins[@]}
 zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
+
 
 
 # aliases
