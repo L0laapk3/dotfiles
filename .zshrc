@@ -100,5 +100,3 @@ alias du="du -ahd1 | sort -h"
 alias nice="nice -n19 ionice -c3" # More nice :)
 
 alias "sudo apt install"="sudo apt install -y"
-
-zinit wait lucid atinit'source ~/dotfiles/clangVer' nocd for /dev/null
