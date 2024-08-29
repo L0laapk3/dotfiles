@@ -10,7 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Keybinds
-WORDCHARS=\=\\\|$WORDCHARS:s:/: # Add \, =, |, remove / from word chars
+WORDCHARS=\=\\\|$WORDCHARS:s:/: # Add.=\| remove / from word chars. Todo: remove .
 
 bindkey "^[[3~"   delete-char        # delete key
 bindkey "^[[H"    beginning-of-line  # home
@@ -83,7 +83,7 @@ _zinit_late_plugins=(
 	atload="!_zsh_autosuggest_start"
 		zsh-users/zsh-autosuggestions
 
-	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1"
+	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1"
 		agkozak/zsh-z
 )
 
@@ -99,6 +99,6 @@ alias du="du -ahd1 | sort -h"
 
 alias nice="nice -n19 ionice -c3" # More nice :)
 
-alias "sudo apt install"="sudo apt install -y"
+alias pkill="pkill -u $USER"
 
-zinit wait lucid atinit'source ~/dotfiles/clangVer' nocd for /dev/null
+alias "sudo apt install"="sudo apt install -y"
