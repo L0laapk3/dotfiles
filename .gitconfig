@@ -5,6 +5,7 @@
 [core]
 	editor = code --wait
 	excludesfile = ~/.gitignore
+    mergeoptions = --no-edit
 [diff]
 	tool = vscode
 [difftool "vscode"]

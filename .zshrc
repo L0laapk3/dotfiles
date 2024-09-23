@@ -10,7 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Keybinds
-WORDCHARS=\\$WORDCHARS:s:/: # Add \, remove / from word chars
+WORDCHARS=\=\\\|$WORDCHARS:s:/: # Add.=\| remove / from word chars. Todo: remove .
 
 bindkey "^[[3~"   delete-char        # delete key
 bindkey "^[[H"    beginning-of-line  # home
@@ -30,7 +30,7 @@ zstyle ':completion:*' group-order \
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt appendhistory
+setopt share_history # For multiple parallel sessions
 
 
 # autocd
@@ -55,18 +55,19 @@ _zinit_plugins=(
 	atload="source ~/.p10k.zsh"
 		romkatv/powerlevel10k
 
-	atload="                                      \
-		bindkey -M menuselect                     \
-			'^[[D'    .backward-char              \
-			'^[[C'    .forward-char               \
-			'^[[1;5C' .forward-word               \
-			'^[[1;5D' .backward-word              \
-			'^I'      menu-complete               \
-			'^[[Z'    reverse-menu-complete       \
-			'^M'      .accept-line;               \
-		bindkey                                   \
-			'^I'   menu-select                    \
-			'^[[Z' menu-select;                   \
+	atload="                                             \
+		bindkey -M menuselect                            \
+			'^[[D'    .backward-char                     \
+			'^[[C'    .forward-char                      \
+			'^[[1;5C' .forward-word                      \
+			'^[[1;5D' .backward-word                     \
+			'^I'      menu-complete                      \
+			'^[[Z'    reverse-menu-complete              \
+			'^M'      .accept-line;                      \
+		bindkey                                          \
+			'^I'   menu-select                           \
+			'^[[Z' menu-select;                          \
+		zstyle ':completion:*:paths' path-completion yes \
 	"
 		marlonrichert/zsh-autocomplete
 )
@@ -82,12 +83,13 @@ _zinit_late_plugins=(
 	atload="!_zsh_autosuggest_start"
 		zsh-users/zsh-autosuggestions
 
-	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1"
+	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1"
 		agkozak/zsh-z
 )
 
 zinit      lucid light-mode depth=1 for ${_zinit_plugins[@]}
 zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
+
 
 
 # aliases
@@ -101,6 +103,6 @@ alias du="du -ahd1 | sort -h"
 
 alias nice="nice -n19 ionice -c3" # More nice :)
 
-alias "sudo apt install"="sudo apt install -y"
+alias pkill="pkill -u $USER"
 
-zinit wait lucid atinit'source ~/dotfiles/clangVer' nocd for /dev/null
+alias "sudo apt install"="sudo apt install -y"

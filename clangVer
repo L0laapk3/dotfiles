@@ -1,17 +1,15 @@
-clangVer() {
-    if [ -z "$1" ]; then
-        echo "Usage: create_symlinks <clang-version>"
-        return 1
-    fi
+if [ -z "$1" ]; then
+	echo "Usage: clangVer <clang-version>"
+	return 1
+fi
 
-    for tool in /usr/bin/*-"$1"; do
-        tool=$(basename "$tool")
-        base_tool=/usr/bin/$(basename "$tool" "-$1")
+for tool in /usr/bin/*-"$1"; do
+	tool=$(basename "$tool")
+	base_tool=/usr/bin/$(basename "$tool" "-$1")
 
-        sudo ln -sf "$tool" "$base_tool"
+	sudo ln -sf "$tool" "$base_tool"
 
-        echo "Created symlink: $base_tool -> $tool"
-    done
+	echo "Created symlink: $base_tool -> $tool"
+done
 
-    echo "Symlinks created successfully."
-}
+echo "Symlinks created successfully."
