@@ -91,6 +91,7 @@ zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
 
 
 # aliases
+alias ls='ls --color=auto'
 alias ll="ls -la"
 alias llt="ll -rt"
 alias du="du -ahd1 | sort -h"
