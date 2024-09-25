@@ -6,7 +6,7 @@ dstDir=$(realpath --relative-to="$HOME" "${2:-$HOME}")
 # echo "~/$dstDir -> ~/$srcDir"
 
 # Make links for all files to dotfiles folder
-for file in $(find "$HOME/$srcDir" -xtype f -name '.*' -not -path "$HOME/$srcDir/.git" -and -not -path "$HOME/$srcDir/dotfiles/*"); do # Everything starting with dot
+for file in $(find "$HOME/$srcDir" -xtype f -wholename "$HOME/$srcDir/.*" -not -path "$HOME/$srcDir/.git/*" -and -not -path "$HOME/$srcDir/dotfiles/*"); do # Everything starting with dot
 
 	file=$(realpath -s --relative-to="$HOME/$srcDir" "$file")
 
@@ -26,7 +26,7 @@ for file in $(find "$HOME/$srcDir" -xtype f -name '.*' -not -path "$HOME/$srcDir
 	if [[ -e "$HOME/$dst" ]]; then
 		result="(file exists)"
 	else
-		ln -s "$(realpath -s --relative-to="$HOME/$dstDir" "$HOME/$src")" "$HOME/$dst"
+		ln -s "$(realpath -s -m --relative-to="$(dirname "$src")" "$srcDir")/$(realpath -s --relative-to="$HOME/$dstDir" "$HOME/$src")" "$HOME/$dst"
 		printf "~/%-23s -> ~/%-32s %s\n" "$dst" "$src" $result
 	fi
 
