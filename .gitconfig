@@ -22,7 +22,7 @@
 	defaultBranch = master
 
 [pull]
-	rebase = false
+	rebase = true
 
 [submodule]
 	recurse = true

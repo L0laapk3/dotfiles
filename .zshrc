@@ -105,4 +105,6 @@ alias nice="nice -n19 ionice -c3" # More nice :)
 
 alias pkill="pkill -u $USER"
 
+alias crontab="EDITOR=nano crontab"
+
 alias "sudo apt install"="sudo apt install -y"
