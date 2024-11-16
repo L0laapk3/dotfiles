@@ -5,7 +5,7 @@
 [core]
 	editor = code --wait
 	excludesfile = ~/.gitignore
-    mergeoptions = --no-edit
+	mergeoptions = --no-edit
 [diff]
 	tool = vscode
 [difftool "vscode"]
@@ -22,10 +22,15 @@
 	defaultBranch = master
 
 [pull]
-	rebase = false
+	rebase = true
 
 [submodule]
 	recurse = true
 [user]
 	email = L0laapk3@gmail.com
 	name = L0laapk3
+
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
