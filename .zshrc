@@ -69,7 +69,8 @@ _zinit_plugins=(
 			'^[[Z' menu-select;                          \
 		zstyle ':completion:*:paths' path-completion yes \
 	"
-		marlonrichert/zsh-autocomplete
+    	aaronkollasch/zsh-autocomplete
+		# marlonrichert/zsh-autocomplete
 )
 _zinit_late_plugins=(
 	OMZP::git
