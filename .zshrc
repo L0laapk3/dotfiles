@@ -66,8 +66,7 @@ _zinit_plugins=(
 		zstyle ':completion:*' list-rows-first no;                                                  \
 		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};                             \
 	"
-    	aaronkollasch/zsh-autocomplete
-		# marlonrichert/zsh-autocomplete
+		marlonrichert/zsh-autocomplete
 )
 _zinit_late_plugins=(
 	OMZP::git
