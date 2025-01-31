@@ -50,18 +50,18 @@ _zinit_plugins=(
 	atload="source ~/.p10k.zsh"
 		romkatv/powerlevel10k
 
-	atload="                                             \
-		bindkey -M menuselect                            \
-			'^[[D'    .backward-char                     \
-			'^[[C'    .forward-char                      \
-			'^[[1;5C' .forward-word                      \
-			'^[[1;5D' .backward-word                     \
-			'^I'      menu-complete                      \
-			'^[[Z'    reverse-menu-complete              \
-			'^M'      .accept-line;                      \
-		bindkey                                          \
-			'^I'   menu-select                           \
-			'^[[Z' menu-select;                          \
+	atload="                                \
+		bindkey -M menuselect               \
+			'^[[D'    .backward-char        \
+			'^[[C'    .forward-char         \
+			'^[[1;5C' .forward-word         \
+			'^[[1;5D' .backward-word        \
+			'^I'      menu-complete         \
+			'^[[Z'    reverse-menu-complete \
+			'^M'      .accept-line;         \
+		bindkey                             \
+			'^I'   menu-select              \
+			'^[[Z' menu-select;             \
 		zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored; \
 		zstyle ':completion:*' list-rows-first no;                                                  \
 		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};                             \
