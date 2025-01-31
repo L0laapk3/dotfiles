@@ -20,11 +20,6 @@ bindkey "^[[1;5D" backward-word
 bindkey "^H"      backward-kill-word # ctrl backspace
 bindkey "^[[3;5~" kill-word          # ctrl delete
 
-zstyle ':completion:*' group-order \
-    aliases suffix-aliases functions reserved-words builtins commands \
-    remotes hosts recent-branches commits \
-    all-expansions expansions options
-
 
 # Turn on history file
 HISTFILE=~/.zsh_history
@@ -67,7 +62,9 @@ _zinit_plugins=(
 		bindkey                                          \
 			'^I'   menu-select                           \
 			'^[[Z' menu-select;                          \
-		zstyle ':completion:*:paths' path-completion yes \
+		zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored; \
+		zstyle ':completion:*' list-rows-first no;                                                  \
+		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};                             \
 	"
     	aaronkollasch/zsh-autocomplete
 		# marlonrichert/zsh-autocomplete
