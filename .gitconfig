@@ -29,6 +29,7 @@
 [user]
 	email = L0laapk3@gmail.com
 	name = L0laapk3
+	signingkey = ~/.ssh/id_rsa.pub
 
 [commit]
 	gpgsign = true
