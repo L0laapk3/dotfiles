@@ -50,6 +50,8 @@ _zinit_plugins=(
 	atload="source ~/.p10k.zsh"
 		romkatv/powerlevel10k
 
+	rkh/zsh-jj
+
 	atload="                                \
 		bindkey -M menuselect               \
 			'^[[D'    .backward-char        \
