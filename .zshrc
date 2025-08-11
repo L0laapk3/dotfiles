@@ -26,6 +26,7 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt share_history # For multiple parallel sessions
+setopt HIST_IGNORE_DUPS
 
 
 # autocd
@@ -100,11 +101,13 @@ alias llt="ll -rt"
 
 alias du="du -ahd1 | sort -h"
 
-alias nice="nice -n19 ionice -c3" # More nice :)
+# alias nice="nice -n19 ionice -c3" # More nice :)
 
 alias pkill="pkill -u $USER"
 
 alias crontab="EDITOR=nano crontab"
+
+alias gl="git log --oneline"
 
 alias "sudo apt install"="sudo apt install -y"
 
