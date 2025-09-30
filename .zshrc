@@ -111,7 +111,9 @@ alias gl="git log --oneline"
 
 alias "sudo apt install"="sudo apt install -y"
 
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
 
 # pnpm
 export PNPM_HOME="/home/kris/.local/share/pnpm"
