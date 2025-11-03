@@ -90,8 +90,6 @@ _zinit_late_plugins=(
 zinit      lucid light-mode depth=1 for ${_zinit_plugins[@]}
 zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
 
-
-
 # aliases
 alias grep='grep --color'
 
