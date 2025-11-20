@@ -91,24 +91,20 @@ zinit      lucid light-mode depth=1 for ${_zinit_plugins[@]}
 zinit wait lucid light-mode depth=1 for ${_zinit_late_plugins[@]}
 
 # aliases
-unalias grep &> /dev/null
-grep() { command grep --color "$@"; }
+alias grep="grep --color"
+alias ls="ls --color=auto"
+alias ll="ls -la"
+alias llt="ll -rt"
 
-unalias ls &> /dev/null
-ls()  { command ls --color=auto "$@"; }
-unalias ll &> /dev/null
-ll()  { ls -la "$@"; }
-llt() { ll -rt "$@"; }
+alias du="du -ahd1 | sort -h"
 
-du() { command du -ahd1 | sort -h $@; }
+alias nice="nice -n19 ionice -c3 zsh -ic" # More nice :)
 
-nice() { command nice -n19 ionice -c3 zsh -ic "$*"; } # More nice :)
+alias pkill="pkill -u $USER"
 
-pkill() { command pkill -u $USER $@; }
+alias crontab="EDITOR=nano crontab"
 
-crontab() { EDITOR=nano crontab $@; }
-
-gl() { git log --oneline $@; }
+alias gl="git log --oneline"
 
 alias "sudo apt install"="sudo apt install -y"
 
