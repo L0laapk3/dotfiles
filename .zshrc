@@ -65,9 +65,12 @@ _zinit_plugins=(
 		bindkey                             \
 			'^I'   menu-select              \
 			'^[[Z' menu-select;             \
-		zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored; \
-		zstyle ':completion:*' list-rows-first no;                                                  \
-		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};                             \
+		zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored;\
+		zstyle ':completion:*' list-rows-first no;\
+		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};\
+		zstyle ':completion:*' format '';\
+		zstyle ':completion:*' group-name '';\
+		zstyle ':autocomplete::compinit' arguments -C;\
 	"
 		marlonrichert/zsh-autocomplete
 
