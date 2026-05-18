@@ -70,6 +70,9 @@ _zinit_plugins=(
 		zstyle ':completion:*:default' list-colors \${(s.:.)LS_COLORS};                             \
 	"
 		marlonrichert/zsh-autocomplete
+
+	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1"
+		agkozak/zsh-z
 )
 _zinit_late_plugins=(
 	OMZP::git
@@ -82,9 +85,6 @@ _zinit_late_plugins=(
 
 	atload="!_zsh_autosuggest_start"
 		zsh-users/zsh-autosuggestions
-
-	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1"
-		agkozak/zsh-z
 )
 
 zinit      lucid light-mode depth=1 for ${_zinit_plugins[@]}
