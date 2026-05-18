@@ -521,7 +521,16 @@
   # Powerlevel10k has to fall back to using vcs_info.
   typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=76
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=76
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=178
+  # Keep modified state green too so the fallback matches the styled output;
+  # dirty status is shown by the `±` suffix appended in vcs_info's formats below.
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=76
+
+  # Style the fallback git status to look similar to the p10k gitstatusd one.
+  zstyle ':vcs_info:git*' check-for-changes true
+  zstyle ':vcs_info:git*' stagedstr   ' ±'
+  zstyle ':vcs_info:git*' unstagedstr ' ±'
+  zstyle ':vcs_info:git*' formats       '%b%c%u'
+  zstyle ':vcs_info:git*' actionformats '%b%c%u|%a'
 
   ##########################[ status: exit code of the last command ]###########################
   # Enable OK_PIPE, ERROR_PIPE and ERROR_SIGNAL status states to allow us to enable, disable and
