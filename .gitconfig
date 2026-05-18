@@ -35,3 +35,5 @@
 	gpgsign = true
 [gpg]
 	format = ssh
+[include]
+    path = ~/.gitconfig.local

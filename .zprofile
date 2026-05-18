@@ -17,3 +17,6 @@ else
 fi
 
 export DEFAULT_USER=$USER
+
+[[ -r ~/.zprofile.local ]] && source ~/.zprofile.local
+
