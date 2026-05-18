@@ -77,8 +77,7 @@ _zinit_plugins=(
 _zinit_late_plugins=(
 	OMZP::git
 
-	atinit="ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-		zdharma-continuum/fast-syntax-highlighting
+	zdharma-continuum/fast-syntax-highlighting
 
 	blockf
 		zsh-users/zsh-completions
