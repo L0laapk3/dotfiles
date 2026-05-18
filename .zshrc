@@ -98,7 +98,7 @@ alias llt="ll -rt"
 
 alias du="du -ahd1 | sort -h"
 
-alias nice="nice -n19 ionice -c3 zsh -ic" # More nice :)
+nice() { command nice -n4 ionice "$@" } # More nice :)
 
 alias pkill="pkill -u $USER"
 
@@ -113,7 +113,7 @@ if [ -f "$HOME/.cargo/env" ]; then
 fi
 
 # pnpm
-export PNPM_HOME="/home/kris/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
