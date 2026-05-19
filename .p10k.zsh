@@ -51,7 +51,6 @@
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
     vcs                     # git status
-    ipd
     direnv                  # direnv status (https://direnv.net/)
     asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
     virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
@@ -1702,14 +1701,6 @@
   # POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS. It displays an icon and orange text greeting the user.
   #
   # Type `p10k help segment` for documentation and a more sophisticated example.
-  function prompt_ipd() {
-	local text=$Q
-    [[ "$(which chessde)" == *"/git_builds/"* ]] && text="$text nightly"
-    p10k segment -c "$Q" -f 98 -t "$text"
-  }
-  function instant_prompt_ipd() {
-	prompt_ipd
-  }
 
   # User-defined prompt segments can be customized the same way as built-in segments.
   # typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=208
@@ -1741,6 +1732,9 @@
   # can slow down prompt by 1-2 milliseconds, so it's better to keep it turned off unless you
   # really need it.
   typeset -g POWERLEVEL9K_DISABLE_HOT_RELOAD=true
+
+
+  [[ -r ~/.p10k.zsh.local ]] && source ~/.p10k.zsh.local
 
   # If p10k is already loaded, reload configuration.
   # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
