@@ -27,12 +27,9 @@
 [submodule]
 	recurse = true
 [user]
-	email = L0laapk3@gmail.com
-	name = L0laapk3
-	signingkey = ~/.ssh/id_ed25519.pub
+    name = L0laapk3
+    email = L0laapk3@gmail.com
 
-[commit]
-	gpgsign = true
 [gpg]
 	format = ssh
 [include]
