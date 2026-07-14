@@ -30,7 +30,11 @@
     name = L0laapk3
     email = L0laapk3@gmail.com
 
+# [commit]
+# 	gpgsign = true
 [gpg]
 	format = ssh
 [include]
     path = ~/.gitconfig.local
+[alias]
+	recap = "!f() { weeks=\"${1:-3}\"; extra=$((weeks + 1)); { git --no-pager log --all --source --author=\"$(git config user.name)\" --since=\"${weeks} weeks ago\" --format=\"G|%h|%ad|%S|%s\" --date=short; git --no-pager log --all --source --author=\"$(git config user.name)\" --since=\"${extra} weeks ago\" --until=\"${weeks} weeks ago\" --format=\"R|%h|%ad|%S|%s\" --date=short; } | sed \"s|refs/remotes/origin/||;s|refs/heads/||\" | while IFS=\"|\" read -r flag hash date branch msg; do if [ \"$flag\" = \"G\" ]; then dc=\"\\033[32m\"; else dc=\"\\033[31m\"; fi; printf \"\\033[33m%s ${dc}%s \\033[36m%-35s \\033[0m%s\\n\" \"$hash\" \"$date\" \"$branch\" \"$msg\"; done; }; f"

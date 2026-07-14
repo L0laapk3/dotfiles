@@ -87,7 +87,8 @@
     gcloud                  # google cloud cli account and project (https://cloud.google.com/)
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
-    context                 # user@hostname
+    my_context              # context with default username & wsl support
+    # context               # user@hostname (replaced by my_host on left)
     nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
     ranger                  # ranger shell (https://github.com/ranger/ranger)
     yazi                    # yazi shell (https://github.com/sxyazi/yazi)
@@ -942,34 +943,17 @@
   # Custom icon.
   # typeset -g POWERLEVEL9K_CPU_ARCH_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
-  ##################################[ context: user@hostname ]##################################
-  # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
-  # Context color in SSH without privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=180
-  # Default context color (no privileges, no SSH).
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=180
-
-
-  CONTEXT_USER_STR="%n@"
-  if [[ $USER == $DEFAULT_USER ]]; then
-	CONTEXT_USER_STR=""
-  fi
-  # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE="%B$CONTEXT_USER_STR%m"
-  # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE="$CONTEXT_USER_STR%m"
-  # Default context format (no privileges, no SSH): user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE="$CONTEXT_USER_STR%m"
-
-  # Don't show context unless running with privileges or in SSH.
-  # Tip: Remove the next line to always show context.
-  typeset -g POWERLEVEL9K_CONTEXT_{DEFAULT,SUDO}_{CONTENT,VISUAL_IDENTIFIER}_EXPANSION=
-
-  # Custom icon.
-  # typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='⭐'
-  # Custom prefix.
-  # typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%248Fwith '
+  ##################################[ my_context: WSL distro / hostname ]##################################
+  # Custom segment to always display the WSL distro name or hostname.
+  function prompt_my_context() {
+    if [[ -n $WSL_DISTRO_NAME ]]; then
+      p10k segment -f 180 -t "$WSL_DISTRO_NAME"
+    else
+      p10k segment -f 180 -t "%m"
+    fi
+  }
+  typeset -g POWERLEVEL9K_MY_CONTEXT_FOREGROUND=180
+  typeset -g POWERLEVEL9K_MY_CONTEXT_VISUAL_IDENTIFIER_EXPANSION=
 
   ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
   # Python virtual environment color.
