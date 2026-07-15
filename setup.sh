@@ -1,5 +1,28 @@
 #!/bin/zsh
 
+# WSL: bridge Linux ssh/git to the Windows OpenSSH Authentication Agent
+if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
+	command -v socat >/dev/null  || echo "WSL ssh-agent: sudo apt install socat"
+	command -v unzip >/dev/null || echo "WSL ssh-agent: sudo apt install unzip"
+	_npiperelay_dir="$HOME/.local/share/wsl-ssh-agent"
+	_npiperelay="$_npiperelay_dir/npiperelay.exe"
+	if [[ ! -x $_npiperelay ]]; then
+		mkdir -p "$_npiperelay_dir"
+		_zip="$(mktemp)"
+		if curl -fsSL -o "$_zip" \
+			https://github.com/jstarks/npiperelay/releases/download/v0.1.0/npiperelay_windows_amd64.zip \
+			&& unzip -oj "$_zip" npiperelay.exe -d "$_npiperelay_dir" \
+			&& chmod +x "$_npiperelay"; then
+			echo "installed $_npiperelay"
+		else
+			echo "failed to install npiperelay.exe"
+		fi
+		rm -f "$_zip"
+	fi
+	rm -f "$HOME/.local/bin/npiperelay.exe"
+	unset _npiperelay _npiperelay_dir _zip
+fi
+
 srcDir=$(realpath --relative-to="$HOME" "${1:-$(dirname $0)}")
 dstDir=$(realpath --relative-to="$HOME" "${2:-$HOME}")
 
