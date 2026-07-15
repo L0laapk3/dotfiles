@@ -39,7 +39,6 @@
     # time
     # os_icon               # os identifier
     dir                     # current directory
-    time                    # transient only (see p10k-on-*-prompt below)
     dir_tail                # transient only: last path component
     # prompt_char           # prompt symbol
   )
@@ -90,6 +89,7 @@
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
     my_context              # context with default username & wsl support
+    time
     # context               # user@hostname (replaced by my_host on left)
     nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
     ranger                  # ranger shell (https://github.com/ranger/ranger)
@@ -125,16 +125,16 @@
   function p10k-on-pre-prompt() {
     p10k display \
       '1/left/dir'=show \
-      '1/left/time'=hide \
       '1/left/dir_tail'=hide \
-      '1/right/*'=show
+      '1/right/my_context'=show \
+      '1/right/time'=hide
   }
   function p10k-on-post-prompt() {
     p10k display \
       '1/left/dir'=hide \
-      '1/left/time'=show \
       '1/left/dir_tail'=show \
-      '1/right/my_context'=hide
+      '1/right/my_context'=hide \
+      '1/right/time'=show
   }
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
