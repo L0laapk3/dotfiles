@@ -51,7 +51,7 @@ _zinit_plugins=(
 	atload="source ~/.p10k.zsh"
 		romkatv/powerlevel10k
 
-	rkh/zsh-jj
+	# rkh/zsh-jj
 
 	atload="                                \
 		bindkey -M menuselect               \
