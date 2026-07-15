@@ -3,8 +3,6 @@
 export TZ=Europe/Brussels
 
 # WSL: expose Windows ssh-agent to Linux ssh/git via SSH_AUTH_SOCK.
-# Windows (once): ssh-agent service Automatic + running, then ssh-add your key.
-# Deps: socat, unzip, npiperelay.exe (~/.local/share/wsl-ssh-agent/ — ~/dotfiles/setup.sh)
 if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
 	_wsl_ssh_agent_sock="${XDG_RUNTIME_DIR:-$HOME/.ssh}/wsl-ssh-agent.sock"
 	_npiperelay="$HOME/.local/share/wsl-ssh-agent/npiperelay.exe"
@@ -16,6 +14,7 @@ if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
 	}
 
 	if ! _wsl_ssh_agent_alive && command -v socat >/dev/null && [[ -x $_npiperelay ]]; then
+		pkill -f "socat UNIX-LISTEN:$_wsl_ssh_agent_sock," 2>/dev/null
 		rm -f "$_wsl_ssh_agent_sock"
 		setsid socat "UNIX-LISTEN:$_wsl_ssh_agent_sock,fork" \
 			"EXEC:$_npiperelay -ei -s //./pipe/openssh-ssh-agent,nofork" \

@@ -23,6 +23,9 @@ if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
 	unset _npiperelay _npiperelay_dir _zip
 fi
 
+
+
+
 srcDir=$(realpath --relative-to="$HOME" "${1:-$(dirname $0)}")
 dstDir=$(realpath --relative-to="$HOME" "${2:-$HOME}")
 
