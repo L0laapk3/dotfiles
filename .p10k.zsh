@@ -36,9 +36,11 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    time
+    # time
     # os_icon               # os identifier
     dir                     # current directory
+    time                    # transient only (see p10k-on-*-prompt below)
+    dir_tail                # transient only: last path component
     # prompt_char           # prompt symbol
   )
 
@@ -117,6 +119,23 @@
     # battery               # internal battery
     # wifi                  # wifi speed
   )
+
+  # Active prompt: full dir + full rprompt.
+  # Retired prompt: time + last dir name on the left; rprompt without my_context.
+  function p10k-on-pre-prompt() {
+    p10k display \
+      '1/left/dir'=show \
+      '1/left/time'=hide \
+      '1/left/dir_tail'=hide \
+      '1/right/*'=show
+  }
+  function p10k-on-post-prompt() {
+    p10k display \
+      '1/left/dir'=hide \
+      '1/left/time'=show \
+      '1/left/dir_tail'=show \
+      '1/right/my_context'=hide
+  }
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
   typeset -g POWERLEVEL9K_MODE=nerdfont-complete
@@ -943,6 +962,25 @@
   # Custom icon.
   # typeset -g POWERLEVEL9K_CPU_ARCH_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
+  ##################################[ dir_tail: last path component (transient) ]##################################
+  function prompt_dir_tail() {
+    local display tail
+    display=$(print -P %~)
+    if [[ $display == '~' ]]; then
+      tail='~'
+    elif [[ $display != */* ]]; then
+      tail=$display
+    else
+      tail=${display:t}
+    fi
+    [[ -z $tail ]] && tail='/'
+    p10k segment -t "$tail"
+  }
+  typeset -g POWERLEVEL9K_DIR_TAIL_BACKGROUND=$POWERLEVEL9K_BACKGROUND
+  typeset -g POWERLEVEL9K_DIR_TAIL_FOREGROUND=$POWERLEVEL9K_DIR_ANCHOR_FOREGROUND
+  typeset -g POWERLEVEL9K_DIR_TAIL_CONTENT_EXPANSION='%B${P9K_CONTENT}%b'
+  typeset -g POWERLEVEL9K_DIR_TAIL_VISUAL_IDENTIFIER_EXPANSION=
+
   ##################################[ my_context: WSL distro / hostname ]##################################
   # Custom segment to always display the WSL distro name or hostname.
   function prompt_my_context() {
@@ -1674,7 +1712,7 @@
   # If set to true, time will update when you hit enter. This way prompts for the past
   # commands will contain the start times of their commands as opposed to the default
   # behavior where they contain the end times of their preceding commands.
-  typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=false
+  typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=true
   # Custom icon.
   typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
@@ -1698,8 +1736,6 @@
   #   - same-dir: Trim down prompt when accepting a command line unless this is the first command
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
-
-  # Instant prompt mode.
   #
   #   - off:     Disable instant prompt. Choose this if you've tried instant prompt and found
   #              it incompatible with your zsh configuration files.
