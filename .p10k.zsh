@@ -983,25 +983,25 @@
 
   ##################################[ my_context: WSL distro / hostname ]##################################
   # Custom segment to always display the WSL distro name or hostname.
+  # Icon only on WSL — overrides the global "few icons" style for this segment alone.
+  typeset -g MY_CONTEXT_ICON=
   function prompt_my_context() {
-    local icon text fg=180
+    local text fg=180
     if [[ -n $WSL_DISTRO_NAME ]]; then
       text=$WSL_DISTRO_NAME
-      icon=$'\uF17A'    # Windows logo — closest available WSL indicator
-    elif [[ -n $SSH_CONNECTION ]]; then
-      text=%m
-      icon=$'\uEB50'    # server
+      MY_CONTEXT_ICON=$'\uF17A'    # Windows logo — WSL-only icon override
     else
       text=%m
+      MY_CONTEXT_ICON=
     fi
-    p10k segment -f $fg -i "$icon" -t "$text"
+    p10k segment -f $fg -t "$text"
   }
   function instant_prompt_my_context() {
     prompt_my_context
   }
   typeset -g POWERLEVEL9K_MY_CONTEXT_FOREGROUND=180
   typeset -g POWERLEVEL9K_MY_CONTEXT_ICON_BEFORE_CONTENT=true
-  # Do not set VISUAL_IDENTIFIER_EXPANSION to empty — that suppresses -i icons.
+  typeset -g POWERLEVEL9K_MY_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='${MY_CONTEXT_ICON}'
 
   ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
   # Python virtual environment color.
