@@ -31,4 +31,6 @@ if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
 	unfunction _wsl_ssh_agent_alive 2>/dev/null
 fi
 
+hash -d C=/mnt/c
+
 [[ -r ~/.zshenv.local ]] && source ~/.zshenv.local
