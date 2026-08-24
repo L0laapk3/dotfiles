@@ -31,3 +31,14 @@ for file in $(find "$HOME/$srcDir" -xtype f -wholename "$HOME/$srcDir/.*" -not -
 	fi
 
 done
+
+
+# WSL: activate the ssh-agent unit just linked. Only WSL needs a locally managed
+# agent; everywhere else it arrives forwarded over ssh. daemon-reload is still
+# allowed to fail, since a WSL distro without systemd=true has no user instance.
+if [[ -n $WSL_DISTRO_NAME ]] && systemctl --user daemon-reload 2>/dev/null; then
+	systemctl --user enable ssh-agent.service >/dev/null 2>&1
+	if ! systemctl --user is-active --quiet ssh-agent.service; then
+		systemctl --user start ssh-agent.service && echo "started ssh-agent.service"
+	fi
+fi

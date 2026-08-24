@@ -1,0 +1,11 @@
+[Unit]
+Description=SSH agent
+
+[Service]
+# -D keeps ssh-agent in the foreground so systemd supervises the process itself
+# rather than a dead parent. %t is the per-user runtime dir, so the socket path
+# matches the one .zshenv looks for.
+ExecStart=/usr/bin/ssh-agent -D -a %t/ssh-agent.socket
+
+[Install]
+WantedBy=default.target
