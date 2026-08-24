@@ -15,7 +15,7 @@ for file in $(find "$HOME/$srcDir" -xtype f -wholename "$HOME/$srcDir/.*" -not -
 	fi
 
 	src="$srcDir/$file"
-	dst=$(realpath -s --relative-to="$HOME" "$HOME/$dstDir/$file")
+	dst=$(realpath -s -m --relative-to="$HOME" "$HOME/$dstDir/$file")
 
 	mkdir -p $(dirname "$HOME/$dst")
 	result=""
