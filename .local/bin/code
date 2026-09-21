@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+[[ ${VSCODE_GIT_ASKPASS_MAIN:-}${VSCODE_NLS_CONFIG:-} == *cursor-server* ]] && t=cursor d=.cursor-server || t=code d=.vscode-server
+exec "$(ls -d "$HOME/$d/bin/"*/bin/remote-cli/$t 2>/dev/null | tail -1)" "$@"
