@@ -163,3 +163,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
+
+if [[ -n $WSL_DISTRO_NAME ]]; then
+  alias explorer=~C/Windows/explorer.exe
+fi
