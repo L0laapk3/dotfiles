@@ -75,7 +75,7 @@ _zinit_plugins=(
 	"
 		marlonrichert/zsh-autocomplete
 
-	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1"
+	atload="ZSHZ_CASE=smart; ZSHZ_NO_RESOLVE_SYMLINKS=1; ZSHZ_UNCOMMON=1; ZSHZ_TILDE=1; alias z='zshz -t 2>&1'"
 		agkozak/zsh-z
 )
 _zinit_late_plugins=(
