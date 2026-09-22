@@ -146,6 +146,40 @@ alias gl="git log --oneline"
 
 alias "sudo apt install"="sudo apt install -y"
 
+alias bazel="noglob bazel"
+alias b="bazel build"
+alias r="bazel run"
+bazel_graph() {
+	local pkg name d out query names=() targets=() t noimplicit=()
+	(( $# )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
+	for t in "$@"; do
+		if [[ "$t" == --noimplicit_deps ]]; then
+			noimplicit=(--noimplicit_deps)
+			continue
+		fi
+		targets+=("$t")
+		if [[ "$t" == *:* ]]; then names+=("${t##*:}"); else names+=("deps"); fi
+	done
+	(( ${#targets} )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
+	pkg=$(print -r -- "${targets[1]}" | sed 's|^//||; s|:.*||; s|/|_|g')
+	name=${(j:_:)names}
+	query="deps(${(j: + :)targets})"
+	mkdir -p /tmp/bazel-graph
+	d=$(mktemp -d -p /tmp/bazel-graph XXXXXX)
+	mkdir -p "$d/$pkg"
+	out="$d/$pkg/$name.svg"
+	setopt localoptions pipefail
+	if bazel query "$query" "${noimplicit[@]}" --output graph |
+		sed -E '/->/{ /@/s/$/ [weight=1];/; }; /^  "\/\/[^"]*"$/!b; /@/b; /->/b; s/$/ [style=filled, fillcolor=lightyellow];/' |
+		dot -Tsvg >"$out"
+	then
+		code "$out"
+	else
+		rm -f "$out"
+		return 1
+	fi
+}
+
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
 fi
@@ -153,8 +187,8 @@ fi
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
