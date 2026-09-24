@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 [[ ${VSCODE_GIT_ASKPASS_MAIN:-}${VSCODE_NLS_CONFIG:-} == *cursor-server* ]] && t=cursor d=.cursor-server || t=code d=.vscode-server
-exec "$(ls -d "$HOME/$d/bin/"*/bin/remote-cli/$t 2>/dev/null | tail -1)" "$@"
+bin=$(ls -d "$HOME/$d/bin/"*/*/bin/remote-cli/$t "$HOME/$d/bin/"*/bin/remote-cli/$t 2>/dev/null | tail -1)
+[[ -n $bin ]] || { echo "code: no remote-cli $t under $HOME/$d/bin" >&2; exit 127; }
+exec "$bin" "$@"
