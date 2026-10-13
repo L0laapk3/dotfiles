@@ -39,7 +39,7 @@
     # time
     # os_icon               # os identifier
     dir                     # current directory
-    dir_tail                # transient only: last path component
+    dir_short               # transient only: maximally shortened dir
     # prompt_char           # prompt symbol
   )
 
@@ -122,18 +122,18 @@
   )
 
   # Active prompt: full dir + full rprompt.
-  # Retired prompt: time + last dir name on the left; rprompt without my_context.
+  # Retired prompt: time + fully shortened dir on the left; rprompt without my_context.
   function p10k-on-pre-prompt() {
     p10k display \
       '1/left/dir'=show \
-      '1/left/dir_tail'=hide \
+      '1/left/dir_short'=hide \
       '1/right/my_context'=show \
       '1/right/time'=hide
   }
   function p10k-on-post-prompt() {
     p10k display \
       '1/left/dir'=hide \
-      '1/left/dir_tail'=show \
+      '1/left/dir_short'=show \
       '1/right/my_context'=hide \
       '1/right/time'=show
   }
@@ -963,24 +963,19 @@
   # Custom icon.
   # typeset -g POWERLEVEL9K_CPU_ARCH_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
-  ##################################[ dir_tail: last path component (transient) ]##################################
-  function prompt_dir_tail() {
-    local display tail
-    display=$(print -P %~)
-    if [[ $display == '~' ]]; then
-      tail='~'
-    elif [[ $display != */* ]]; then
-      tail=$display
-    else
-      tail=${display:t}
-    fi
-    [[ -z $tail ]] && tail='/'
-    p10k segment -t "$tail"
+  ##################################[ dir_short: maximally shortened dir (transient) ]##################################
+  # Must come after `dir` in the same prompt line: p10k renders every dir segment after the
+  # first one fully shortened, as if the terminal had no room left.
+  # p10k derives the segment's display/style name from $0, so this must be a copy of
+  # prompt_dir's body rather than a call to it. Styling params don't fall back to DIR_*.
+  function prompt_dir_short() {
+    functions[prompt_dir_short]=$functions[prompt_dir]
+    prompt_dir_short "$@"
   }
-  typeset -g POWERLEVEL9K_DIR_TAIL_BACKGROUND=$POWERLEVEL9K_BACKGROUND
-  typeset -g POWERLEVEL9K_DIR_TAIL_FOREGROUND=$POWERLEVEL9K_DIR_ANCHOR_FOREGROUND
-  typeset -g POWERLEVEL9K_DIR_TAIL_CONTENT_EXPANSION='%B${P9K_CONTENT}%b'
-  typeset -g POWERLEVEL9K_DIR_TAIL_VISUAL_IDENTIFIER_EXPANSION=
+  typeset -g POWERLEVEL9K_DIR_SHORT_FOREGROUND=$POWERLEVEL9K_DIR_FOREGROUND
+  typeset -g POWERLEVEL9K_DIR_SHORT_SHORTENED_FOREGROUND=$POWERLEVEL9K_DIR_SHORTENED_FOREGROUND
+  typeset -g POWERLEVEL9K_DIR_SHORT_ANCHOR_FOREGROUND=$POWERLEVEL9K_DIR_ANCHOR_FOREGROUND
+  typeset -g POWERLEVEL9K_DIR_SHORT_ANCHOR_BOLD=$POWERLEVEL9K_DIR_ANCHOR_BOLD
 
   ##################################[ my_context: WSL distro / hostname ]##################################
   # Custom segment to always display the WSL distro name or hostname.
