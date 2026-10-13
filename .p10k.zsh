@@ -88,6 +88,7 @@
     gcloud                  # google cloud cli account and project (https://cloud.google.com/)
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
+    tmux                    # tmux session name (user-defined, see prompt_tmux)
     my_context              # context with default username & wsl support
     time
     # context               # user@hostname (replaced by my_host on left)
@@ -1737,6 +1738,19 @@
   # User-defined prompt segments can be customized the same way as built-in segments.
   # typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=208
   # typeset -g POWERLEVEL9K_EXAMPLE_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  # Inside tmux: shows the session name. Outside: shows how many sessions exist, if any.
+  typeset -g POWERLEVEL9K_TMUX_ICON_BEFORE_CONTENT=true
+  function prompt_tmux() {
+    if [[ -n $TMUX ]]; then
+      (( $+_p10k_tmux_session )) || typeset -g _p10k_tmux_session=$(tmux display-message -p '#S' 2>/dev/null)
+      p10k segment -f 208 -i $'\uF120' -t "$_p10k_tmux_session"
+      return
+    fi
+    [[ -S ${TMUX_TMPDIR:-/tmp}/tmux-$UID/default ]] || return
+    local -a sessions=(${(f)"$(tmux list-sessions -F x 2>/dev/null)"})
+    (( $#sessions )) && p10k segment -f 208 -i $'\uF120' -t "$#sessions"
+  }
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
