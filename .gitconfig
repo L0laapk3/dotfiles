@@ -8,6 +8,7 @@
 	mergeoptions = --no-edit
 [diff]
 	tool = vscode
+	algorithm = histogram
 [difftool "vscode"]
 	cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
