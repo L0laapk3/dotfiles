@@ -1,0 +1,62 @@
+# noglob + command avoids alias recursion (noglob bazel) and keeps the command name
+# "bazel" for completion (_comps[bazel] from _bazel). A shell function named bazel
+# would shadow that and tab-complete would not use _bazel.
+alias bazel='noglob command bazel'
+alias b='bazel build'
+alias r='bazel run'
+alias t='bazel test'
+
+# External targets are left out of the graph unless their repo (or repo//package
+# prefix) is listed in BAZELGRAPH_WHITELISTED_REPOS, e.g. "@ipd,@foo//bar".
+bazel_graph() {
+	local pkg name d out query names=() targets=() t noimplicit=() e repo res=()
+	(( $# )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
+	for t in "$@"; do
+		if [[ "$t" == --noimplicit_deps ]]; then
+			noimplicit=(--noimplicit_deps)
+			continue
+		fi
+		if [[ "$t" == *:*\** && "${t##*:}" != '*' ]]; then
+			targets+=("filter(':${${${t##*:}//./\\.}//\*/[^:]*}\$', ${t%:*}:all)")
+		else
+			targets+=("$t")
+		fi
+		if [[ "$t" == *:* ]]; then names+=("${${t##*:}//\*/_}"); else names+=("deps"); fi
+	done
+	(( ${#targets} )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
+	for e in ${(s:,:)${BAZELGRAPH_WHITELISTED_REPOS// /,}}; do
+		e=${${e#@}#@}
+		repo="([^/]*\\+)?${${e%%//*}//./\\.}\\+?//"
+		if [[ "$e" == *//* ]]; then
+			res+=("$repo${${e#*//}//./\\.}[/:]")
+		else
+			res+=("$repo")
+		fi
+	done
+	t=${${@:#--noimplicit_deps}[1]}
+	if [[ "$t" != //* && "$t" != @* ]]; then
+		d=$PWD
+		while [[ "$d" != / && ! -e "$d/MODULE.bazel" ]]; do d=${d:h}; done
+		t="//${${PWD#$d}#/}${t:+/$t}"
+		t=${t/\/:/:}
+	fi
+	pkg=$(print -r -- "$t" | sed 's|^@*[^/]*//||; s|:.*||; s|/\.\.\.$||; s|/|_|g')
+	name=${(j:_:)names}
+	query="let d = deps(${(j: + :)targets}) in \$d except filter('^@', \$d)"
+	(( ${#res} )) && query+=" + filter('^@@?(${(j:|:)res})', \$d)"
+	mkdir -p /tmp/bazel-graph
+	d=$(mktemp -d -p /tmp/bazel-graph XXXXXX)
+	mkdir -p "$d/$pkg"
+	out="$d/$pkg/$name.svg"
+	setopt localoptions pipefail
+	if bazel query "$query" "${noimplicit[@]}" --output graph |
+		sed -E '/->/{ /@/s/$/ [weight=1]/; }; /^  "\/\/[^"]*"$/!b; /@/b; /->/b; s/$/ [style=filled, fillcolor=lightyellow]/' |
+		dot -Tsvg >"$out"
+	then
+		code "$out"
+	else
+		rm -f "$out"
+		return 1
+	fi
+}
+alias bazel_graph='noglob bazel_graph'

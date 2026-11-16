@@ -43,6 +43,18 @@ if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
 fi
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 
+# Bazel _bazel must be on fpath before zsh-autocomplete runs compinit (first precmd).
+if [[ ! -f ${HOME}/.zsh/completion/_bazel ]]; then
+	command curl -fsSL --create-dirs -o ${HOME}/.zsh/completion/_bazel \
+		https://raw.githubusercontent.com/bazelbuild/bazel/master/scripts/zsh_completion/_bazel
+fi
+fpath=( ${HOME}/.zsh/completion $fpath )
+if [[ -f ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump ]] \
+	&& ! grep -q "^'bazel'" ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump; then
+	command rm -f ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump \
+		${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump.zwc
+fi
+
 
 ### Plugins
 
@@ -144,41 +156,11 @@ alias crontab="EDITOR=nano crontab"
 
 alias gl="git log --oneline"
 
+alias rsync="rsync -avz --progress"
+
 alias "sudo apt install"="sudo apt install -y"
 
-alias bazel="noglob bazel"
-alias b="bazel build"
-alias r="bazel run"
-bazel_graph() {
-	local pkg name d out query names=() targets=() t noimplicit=()
-	(( $# )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
-	for t in "$@"; do
-		if [[ "$t" == --noimplicit_deps ]]; then
-			noimplicit=(--noimplicit_deps)
-			continue
-		fi
-		targets+=("$t")
-		if [[ "$t" == *:* ]]; then names+=("${t##*:}"); else names+=("deps"); fi
-	done
-	(( ${#targets} )) || { print -u2 "usage: bazel_graph [--noimplicit_deps] <target>..."; return 1 }
-	pkg=$(print -r -- "${targets[1]}" | sed 's|^//||; s|:.*||; s|/|_|g')
-	name=${(j:_:)names}
-	query="deps(${(j: + :)targets})"
-	mkdir -p /tmp/bazel-graph
-	d=$(mktemp -d -p /tmp/bazel-graph XXXXXX)
-	mkdir -p "$d/$pkg"
-	out="$d/$pkg/$name.svg"
-	setopt localoptions pipefail
-	if bazel query "$query" "${noimplicit[@]}" --output graph |
-		sed -E '/->/{ /@/s/$/ [weight=1];/; }; /^  "\/\/[^"]*"$/!b; /@/b; /->/b; s/$/ [style=filled, fillcolor=lightyellow];/' |
-		dot -Tsvg >"$out"
-	then
-		code "$out"
-	else
-		rm -f "$out"
-		return 1
-	fi
-}
+source ~/.zshrc.bazel
 
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
